@@ -17,11 +17,11 @@
   --shadow-float: 0 1px 2px rgb(20 33 43 / 0.06), 0 24px 48px -24px rgb(20 33 43 / 0.32);
   --tok-comment: #5b6b77;
   --tok-keyword: #7a3e9d;
-  --tok-variable: #0b6e5f;
-  --tok-string: #8a4b00;
-  --tok-number: #a33a12;
+  --tok-variable: #b54708;
+  --tok-string: #1f5d99;
+  --tok-number: #1e6b3a;
   --tok-flag: #7a3e9d;
-  --tok-command: #0b6e5f;
+  --tok-command: #b54708;
 }
 
 :root[data-theme='dark'] {
@@ -31,11 +31,11 @@
   --shadow-float: 0 1px 2px rgb(0 0 0 / 0.3), 0 24px 48px -24px rgb(0 0 0 / 0.8);
   --tok-comment: #8b9ca8;
   --tok-keyword: #d2a8ff;
-  --tok-variable: #5fd0bc;
-  --tok-string: #f2c27b;
-  --tok-number: #ffa98a;
+  --tok-variable: #ffa552;
+  --tok-string: #8cc4ff;
+  --tok-number: #7fd49a;
   --tok-flag: #d2a8ff;
-  --tok-command: #5fd0bc;
+  --tok-command: #ffa552;
 }
 
 @media (max-width: 480px) {

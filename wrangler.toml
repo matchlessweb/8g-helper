@@ -1,4 +1,4 @@
 # Cloudflare Pages, git-connected: Cloudflare builds each push with `npm run build` and publishes dist/.
-name = "7g-helper"
+name = "8g-helper"
 pages_build_output_dir = "dist"
 compatibility_date = "2026-10-01"

@@ -1,0 +1,19 @@
+# Real 8G log lines (/var/www/<site>/logs/8g.log, watch mode, nG-SetEnvIf 8G v1.5) from GridPane test sites, collected
+# 2026-10-22 and anonymized: IPs are documentation ranges, paths and site addresses are generic (example.com), and long
+# query values were cut to their first 4 characters plus "..." by the report that collected them. One line per sample;
+# the numbers after cookie= ... request= are what nginx logged, so each line carries its own expected rules.
+2026-10-22T17:12:37+00:00 412 "GET /purge/sample-post/" cookie=0 method=0 referer=0 bot=3 querystring=0 request=0 ip=203.0.113.10 ua="curl/8.7.1" ref="-"
+2026-10-22T17:12:37+00:00 412 "GET /purge/2195/" cookie=0 method=0 referer=0 bot=3 querystring=0 request=0 ip=203.0.113.10 ua="curl/8.7.1" ref="-"
+2026-10-22T19:26:57+00:00 200 "GET /sitemap_index.xml" cookie=0 method=0 referer=0 bot=7 querystring=0 request=0 ip=203.0.113.10 ua="Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)" ref="-"
+2026-10-22T19:32:59+00:00 200 "GET /sample-page/" cookie=0 method=0 referer=0 bot=12 querystring=0 request=0 ip=203.0.113.10 ua="Mozilla/5.0 (compatible; SeznamBot/4.0; +https://o-seznam.cz/napoveda/vyhledavani/en/seznambot-crawler/)" ref="-"
+2026-10-22T15:16:27+00:00 404 "GET //blogs/media/media/cache.php" cookie=0 method=0 referer=0 bot=10 querystring=0 request=42 ip=203.0.113.10 ua="Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36" ref="www.google.com"
+2026-10-22T15:16:27+00:00 404 "GET //cache/cache/cache.php" cookie=0 method=0 referer=0 bot=10 querystring=0 request=42 ip=203.0.113.10 ua="Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36" ref="www.google.com"
+2026-10-22T19:28:30+00:00 200 "GET /robots.txt" cookie=0 method=0 referer=0 bot=6 querystring=0 request=0 ip=203.0.113.10 ua="Mozilla/5.0 (compatible; Barkrowler/0.9; +https://babbar.tech/crawler)" ref="-"
+2026-10-22T19:33:00+00:00 200 "GET /blog/" cookie=0 method=0 referer=0 bot=6 querystring=0 request=0 ip=203.0.113.10 ua="Mozilla/5.0 (compatible; Barkrowler/0.9; +https://babbar.tech/crawler)" ref="-"
+2026-10-22T05:21:02+00:00 200 "HEAD /?wp_insert_user=45531&_=1792..." cookie=0 method=0 referer=0 bot=0 querystring=38 request=0 ip=203.0.113.10 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" ref="-"
+2026-10-22T19:34:48+00:00 444 "POST /xmlrpc.php" cookie=0 method=0 referer=0 bot=0 querystring=0 request=49 ip=203.0.113.10 ua="Jetpack/12.0; WordPress/6.4; http://example.com" ref="-"
+2026-10-22T19:34:58+00:00 444 "POST /xmlrpc.php" cookie=0 method=0 referer=0 bot=0 querystring=0 request=49 ip=203.0.113.10 ua="Jetpack by WordPress.com (Jetpack 12.5; WordPress 6.1)" ref="-"
+2026-10-22T19:05:20+00:00 200 "GET /contact/" cookie=0 method=0 referer=0 bot=7 querystring=0 request=0 ip=203.0.113.10 ua="Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)" ref="-"
+2026-10-22T19:05:30+00:00 200 "GET /products/sample-product/" cookie=0 method=0 referer=0 bot=7 querystring=0 request=0 ip=203.0.113.10 ua="Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)" ref="-"
+2026-10-22T18:58:59+00:00 444 "POST //xmlrpc.php" cookie=0 method=0 referer=0 bot=0 querystring=0 request=49 ip=203.0.113.10 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" ref="-"
+2026-10-22T19:00:39+00:00 444 "GET /xmlrpc.php" cookie=0 method=0 referer=0 bot=7 querystring=0 request=49 ip=203.0.113.10 ua="Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)" ref="-"

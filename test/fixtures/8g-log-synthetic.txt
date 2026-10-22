@@ -1,0 +1,56 @@
+# SYNTHETIC lines, written for the tests and the nginx harness (test/nginx/run.sh), not taken from any log. They cover
+# what the live test sites never logged: enforce mode, the referrer and method rules, and requests where nginx's $uri,
+# its raw $query_string or PCRE's meaning differ from the obvious reading. In the 8G log format, each line carries its
+# expected numbers; the harness checks that real nginx gives the same. Other formats follow at the end.
+# Enforce mode: 8G answered these itself (403, or 405 for the method rule).
+2026-10-22T20:10:00+00:00 403 "GET /" cookie=0 method=0 referer=0 bot=3 querystring=0 request=0 ip=192.0.2.17 ua="curl/8.5.0" ref="-"
+2026-10-22T20:10:07+00:00 405 "DEBUG /" cookie=0 method=1 referer=0 bot=0 querystring=0 request=0 ip=192.0.2.24 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:10:14+00:00 403 "GET /blog/" cookie=0 method=0 referer=4 bot=0 querystring=0 request=0 ip=192.0.2.31 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="https://spam.example/cheap-viagra/"
+2026-10-22T20:10:21+00:00 403 "GET /a.php" cookie=0 method=0 referer=0 bot=0 querystring=0 request=41 ip=192.0.2.38 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:10:28+00:00 403 "GET /?s=how+to+get+started" cookie=0 method=0 referer=0 bot=0 querystring=39 request=0 ip=192.0.2.45 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="https://www.example.com/"
+# Watch mode: referrer and method rules (none fired on the live test sites).
+2026-10-22T20:10:35+00:00 200 "GET /" cookie=0 method=0 referer=1 bot=0 querystring=0 request=0 ip=192.0.2.52 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="https://example.net/?id=1%20order%20by%201--"
+2026-10-22T20:10:42+00:00 200 "GET /" cookie=0 method=0 referer=2 bot=0 querystring=0 request=0 ip=192.0.2.59 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="https://example.net/?q=assert(1)"
+2026-10-22T20:10:49+00:00 200 "GET /pricing/" cookie=0 method=0 referer=4 bot=0 querystring=0 request=0 ip=192.0.2.16 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="https://www.example.org/xanax-online"
+2026-10-22T20:10:56+00:00 200 "MOVE /x" cookie=0 method=1 referer=0 bot=0 querystring=0 request=0 ip=192.0.2.23 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:11:03+00:00 200 "TRACK /" cookie=0 method=1 referer=0 bot=0 querystring=0 request=0 ip=192.0.2.30 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+# $uri: %2e%2e and %2f are decoded, then .. climbs and %2f counts as a slash.
+2026-10-22T20:11:10+00:00 404 "GET /wp-content/plugins/%2e%2e/%2e%2e/wp-config.php" cookie=0 method=0 referer=0 bot=0 querystring=0 request=33 ip=192.0.2.37 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:11:17+00:00 404 "GET /wp-content%2fplugins%2fx%2fshell.php" cookie=0 method=0 referer=0 bot=0 querystring=0 request=39 ip=192.0.2.44 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+# $uri: slashes are merged; the raw /a///b would match request rule 14 (///), the merged /a/b matches nothing.
+2026-10-22T20:11:24+00:00 404 "GET //wp-admin///x.php" cookie=0 method=0 referer=0 bot=0 querystring=0 request=41 ip=192.0.2.51 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:11:31+00:00 404 "GET /a///b" cookie=0 method=0 referer=0 bot=0 querystring=0 request=0 ip=192.0.2.58 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+# $uri: %25 decodes once (to a plain %), %3f decodes to a plain ?, + stays +.
+2026-10-22T20:11:38+00:00 404 "GET /a%2500" cookie=0 method=0 referer=0 bot=0 querystring=0 request=14 ip=192.0.2.15 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:11:45+00:00 404 "GET /a%3f%3f" cookie=0 method=0 referer=0 bot=0 querystring=0 request=14 ip=192.0.2.22 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:11:52+00:00 404 "GET /x+union+all+select+1" cookie=0 method=0 referer=0 bot=0 querystring=0 request=32 ip=192.0.2.29 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:11:59+00:00 404 "GET /%7eroot/" cookie=0 method=0 referer=0 bot=0 querystring=0 request=0 ip=192.0.2.36 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:12:06+00:00 404 "GET /%257eroot/" cookie=0 method=0 referer=0 bot=0 querystring=0 request=18 ip=192.0.2.43 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:12:13+00:00 404 "GET /a/./b/../wp-config.php.bak" cookie=0 method=0 referer=0 bot=0 querystring=0 request=33 ip=192.0.2.50 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:12:20+00:00 200 "GET /caf%C3%A9/menu/" cookie=0 method=0 referer=0 bot=0 querystring=0 request=0 ip=192.0.2.57 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+# $query_string is raw: %3a%2f%2f is not decoded.
+2026-10-22T20:12:27+00:00 200 "GET /?url=http%3a%2f%2fexample.com" cookie=0 method=0 referer=0 bot=0 querystring=0 request=0 ip=192.0.2.14 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:12:34+00:00 200 "GET /?u=%2f%3a%2f" cookie=0 method=0 referer=0 bot=0 querystring=2 request=0 ip=192.0.2.21 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:12:41+00:00 404 "GET /?file=..%2f..%2fetc%2fpasswd" cookie=0 method=0 referer=0 bot=0 querystring=17 request=0 ip=192.0.2.28 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:12:48+00:00 404 "GET /?%2dd+allow_url_include%3d1" cookie=0 method=0 referer=0 bot=0 querystring=1 request=0 ip=192.0.2.35 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:12:55+00:00 200 "GET /?s=1+union+select+2" cookie=0 method=0 referer=0 bot=0 querystring=29 request=0 ip=192.0.2.42 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+# PCRE, not JavaScript: $ matches before a final newline (%0a), . matches a carriage return (%0d), \s does not match a 0xA0 byte.
+2026-10-22T20:13:02+00:00 404 "GET /x/.htaccess%0a" cookie=0 method=0 referer=0 bot=0 querystring=0 request=25 ip=192.0.2.49 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:13:09+00:00 404 "GET /eval%0d)" cookie=0 method=0 referer=0 bot=0 querystring=0 request=37 ip=192.0.2.56 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:13:16+00:00 404 "GET /j\xA0avascript:x" cookie=0 method=0 referer=0 bot=0 querystring=0 request=0 ip=192.0.2.13 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+2026-10-22T20:13:23+00:00 200 "GET /" cookie=0 method=0 referer=0 bot=0 querystring=0 request=0 ip=192.0.2.20 ua="OPPO\xA0A33" ref="-"
+2026-10-22T20:13:30+00:00 200 "GET /" cookie=0 method=0 referer=0 bot=4 querystring=0 request=0 ip=192.0.2.27 ua="OPPO A33" ref="-"
+# User agents: case does not matter (~*); a backslash and quote are logged as \x5C\x22.
+2026-10-22T20:13:37+00:00 200 "GET /" cookie=0 method=0 referer=0 bot=3 querystring=0 request=0 ip=192.0.2.34 ua="CURL/7.68.0" ref="-"
+2026-10-22T20:13:44+00:00 200 "GET /" cookie=0 method=0 referer=0 bot=8 querystring=0 request=0 ip=192.0.2.41 ua="Mozilla/5.0 (compatible; dotBot/1.0)" ref="-"
+2026-10-22T20:13:51+00:00 200 "GET /" cookie=0 method=0 referer=0 bot=2 querystring=0 request=0 ip=192.0.2.48 ua="Mozilla/5.0 x\x5C\x22y" ref="-"
+2026-10-22T20:13:58+00:00 200 "GET /javascript:alert(1)" cookie=0 method=0 referer=0 bot=0 querystring=0 request=29 ip=192.0.2.55 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+# A cookie hit: cookies are never in the log line, so the tool can only show the logged rule.
+2026-10-22T20:14:05+00:00 403 "GET /my-account/" cookie=1 method=0 referer=0 bot=0 querystring=0 request=0 ip=192.0.2.70 ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" ref="-"
+# Lines carrying $ng_reason in a format of their own (the numbers are in the tokens).
+192.0.2.71 [22/Oct/2026:20:15:00 +0000] "GET /?s=how+to+get+started HTTP/2.0" 403 ":bad_querystring_39:"
+198.51.100.72 - - [22/Oct/2026:20:15:10 +0000] "GET /a.php HTTP/1.1" 403 153 "-" "Mozilla/5.0 (X11; Linux x86_64)" ":bad_request_41:"
+# Access log lines (nginx and Apache combined format): no rule numbers, so every group is matched from scratch.
+198.51.100.73 - - [22/Oct/2026:20:16:00 +0000] "GET /wp-login.php HTTP/1.1" 200 4512 "-" "Mozilla/5.0 (compatible; AhrefsBot/7.0; +http://ahrefs.com/robot/)"
+198.51.100.74 - - [22/Oct/2026:20:16:30 +0000] "GET /search?q=%22hello%22 HTTP/1.1" 403 199 "-" "Mozilla/5.0 \"quoted\" agent"
+198.51.100.75 - - [22/Oct/2026:20:17:00 +0000] "POST /xmlrpc.php HTTP/1.1" 403 199 "https://www.example.com/" "Jetpack by WordPress.com"

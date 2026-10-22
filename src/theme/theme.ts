@@ -2,7 +2,7 @@ export type Theme = 'light' | 'dark'
 
 export const THEMES: readonly Theme[] = ['light', 'dark']
 
-export const THEME_STORAGE_KEY = '7g-helper-theme'
+export const THEME_STORAGE_KEY = '8g-helper-theme'
 
 export function isTheme(value: string | null): value is Theme {
   return value === 'light' || value === 'dark'

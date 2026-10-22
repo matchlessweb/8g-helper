@@ -31,7 +31,8 @@ const fonts = FIRST_SCREEN.map((name) => {
   return `/assets/${file}`
 })
 const preloads = fonts.map((href) => `<link rel="preload" href="${href}" as="font" type="font/woff2" crossorigin>`)
-page = page.replace(sheet[0], `${preloads.join('\n    ')}\n    <style>${css}</style>`)
+// A function, not a string: in a replacement string $& and $' are patterns, and the markup can contain them.
+page = page.replace(sheet[0], () => `${preloads.join('\n    ')}\n    <style>${css}</style>`)
 const link = fonts.map((href) => `<${href}>; rel=preload; as=font; type="font/woff2"; crossorigin`).join(', ')
 await appendFile(new URL('_headers', dist), `\n# Written by scripts/prerender.mjs: the first-screen fonts, as Early Hints.\n/\n  Link: ${link}\n`)
 
@@ -39,6 +40,8 @@ const empty = '<div id="root"></div>'
 if (!page.includes(empty)) throw new Error('dist/index.html has no empty root to fill')
 const html = render()
 if (!html.includes('<h1')) throw new Error('the prerendered page has no h1')
-await writeFile(new URL('index.html', dist), page.replace(empty, `<div id="root">${html}</div>`))
+page = page.replace(empty, () => `<div id="root">${html}</div>`)
+if (!page.includes(html) || !page.includes(css)) throw new Error('the written page lost markup on the way in')
+await writeFile(new URL('index.html', dist), page)
 await rm(ssr, { recursive: true })
 console.log(`prerendered dist/index.html (${html.length} characters of markup)`)

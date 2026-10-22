@@ -31,3 +31,6 @@ dist-ssr
 # Playwright
 test-results/
 playwright-report/
+
+# Working notes (plans, lessons): kept local, out of the public repo, as on 7G Helper
+tasks/

@@ -1,7 +1,7 @@
 import { LOGO } from './logoPaths'
 
-/** The [7G] Helper lockup: brackets in the accent, letters in the text color. Outlined, so no font is needed. */
-export function Logo({ height = 30, title = '7G Helper' }: { height?: number; title?: string }) {
+/** The [8G] Helper lockup: brackets in the accent, letters in the text color. Outlined, so no font is needed. */
+export function Logo({ height = 30, title = '8G Helper' }: { height?: number; title?: string }) {
   return (
     <svg
       className="logo"
@@ -12,7 +12,7 @@ export function Logo({ height = 30, title = '7G Helper' }: { height?: number; ti
       aria-label={title}
     >
       <path d={LOGO.brackets} fill="none" stroke="var(--color-accent)" strokeWidth={LOGO.bracketStroke} strokeLinecap="square" />
-      <path d={LOGO.sevenG} fill="currentColor" />
+      <path d={LOGO.mark} fill="currentColor" />
       <path d={LOGO.helper} fill="currentColor" />
     </svg>
   )

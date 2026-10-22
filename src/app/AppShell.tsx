@@ -16,7 +16,7 @@ function Wordmark() {
     <div className="wordmark" aria-hidden="true">
       <svg viewBox={`0 0 ${LOGO.width} ${LOGO.height}`} fill="none" strokeWidth="1">
         <path className="wordmark__brackets" d={BRACKET_OUTLINES} vectorEffect="non-scaling-stroke" />
-        <path className="wordmark__letters" d={LOGO.sevenG} vectorEffect="non-scaling-stroke" />
+        <path className="wordmark__letters" d={LOGO.mark} vectorEffect="non-scaling-stroke" />
         <path className="wordmark__letters" d={LOGO.helper} vectorEffect="non-scaling-stroke" />
       </svg>
     </div>
@@ -31,7 +31,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </a>
       <header className="masthead">
         <div className="masthead__inner">
-          <a className="masthead__brand" href="/" aria-label="7G Helper, home">
+          <a className="masthead__brand" href="/" aria-label="8G Helper, home">
             <Logo height={28} />
           </a>
           <nav className="masthead__nav" aria-label="Sections">
@@ -54,10 +54,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           <div className="site-footer__inner">
             <div className="site-footer__brand">
               <Logo height={28} />
-              <p>Paste a 7G log line, see the rule that blocked it, and get an exception scoped to that one request.</p>
+              <p>Paste an 8G log line and see the rule that fired, its pattern, and the text that matched it.</p>
               <p className="site-footer__note">
-                An independent tool, not affiliated with GridPane or the author of 7G. Review each exception file before
-                using it on your own server.
+                An independent tool, not affiliated with GridPane, the author of 8G, or the author of nG-SetEnvIf. Check
+                every change before you make it on your own server.
               </p>
             </div>
             <nav className="site-footer__cols" aria-label="Footer">
@@ -65,7 +65,10 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <h2>The firewall</h2>
                 <ul>
                   <li>
-                    <ExternalLink href={LINKS.sevenG}>7G Firewall by Jeff Starr</ExternalLink>
+                    <ExternalLink href={LINKS.eightG}>8G Firewall by Jeff Starr</ExternalLink>
+                  </li>
+                  <li>
+                    <ExternalLink href={LINKS.ngSetEnvIf}>nG-SetEnvIf, 8G for nginx</ExternalLink>
                   </li>
                   <li>
                     <ExternalLink href={LINKS.gridpaneDocs}>GridPane’s 7G guide</ExternalLink>
@@ -84,7 +87,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                     </li>
                   ))}
                   <li>
-                    <ExternalLink href={LINKS.source}>Source code on GitHub</ExternalLink>
+                    <ExternalLink href={LINKS.source}>Source code on GitHub (GPL-3.0)</ExternalLink>
                   </li>
                 </ul>
               </div>
@@ -92,7 +95,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
           <div className="site-footer__bar">
             <p className="site-footer__credit">
-              © 2026 7G Helper by <ExternalLink href={LINKS.jon}>Jon Phillips</ExternalLink> at{' '}
+              © 2026 8G Helper by <ExternalLink href={LINKS.jon}>Jon Phillips</ExternalLink> at{' '}
               <ExternalLink href={LINKS.matchless}>Matchless Web</ExternalLink>
             </p>
             <ul aria-label="Related sites">
@@ -101,6 +104,9 @@ export function AppShell({ children }: { children: ReactNode }) {
               </li>
               <li>
                 <ExternalLink href={LINKS.perishable}>Perishable Press</ExternalLink>
+              </li>
+              <li>
+                <ExternalLink href={LINKS.sevenGHelper}>7G Helper</ExternalLink>
               </li>
             </ul>
           </div>

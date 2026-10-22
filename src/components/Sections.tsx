@@ -1,35 +1,40 @@
-import { Bot, FileCode2, Link2, ListFilter, Route, ScanSearch, Search, Waypoints } from 'lucide-react'
+import { Bot, Cookie, Link2, ListFilter, Route, Scale, ScanSearch, Search, Waypoints } from 'lucide-react'
 import type { ComponentType, ReactNode } from 'react'
-import type { GroupId } from '../lib/rules'
+import type { GroupId } from '../lib/ng/rules'
 import { LINKS } from '../lib/links'
 import { ExternalLink } from './ExternalLink'
-import { GROUPS } from '../lib/ruleset'
+import { GROUPS } from '../lib/ng/ruleset'
 
 export function HowItWorks() {
   const steps: { icon: typeof Search; title: string; body: ReactNode; cmd?: string }[] = [
     {
       icon: Search,
       title: 'Copy the line',
-      body: <>Every 7G block is logged on the server. To see the latest for one site, run:</>,
-      cmd: 'tail /var/www/<site>/logs/7g.log',
+      body: (
+        <>
+          8G logs every request it blocks, or in watch mode would block, with the rule that fired. A line from any
+          nginx or Apache access log works too. For the latest from one site:
+        </>
+      ),
+      cmd: 'tail /var/www/<site>/logs/8g.log',
     },
     {
       icon: ScanSearch,
       title: 'See the rule',
       body: (
         <>
-          You get the rule group and number, such as <code>bad_request_15</code>, its pattern, and the part of the
-          request it matched.
+          You get the group and number, such as <code>bot=3</code>, its pattern, the text it matched, and any other
+          rule in that group that matches too.
         </>
       ),
     },
     {
-      icon: FileCode2,
-      title: 'Save the file',
+      icon: Scale,
+      title: 'Decide',
       body: (
         <>
-          A file for <code>/var/www/&lt;site&gt;/nginx/</code> turns off that one rule for that one address. Reload
-          nginx, and two <code>curl</code> checks prove it.
+          An attack, or something you want? For something you want, you get the documented way to let it through for
+          now, and what it costs.
         </>
       ),
     },
@@ -37,7 +42,7 @@ export function HowItWorks() {
   return (
     <section className="section" id="how" aria-labelledby="how-title">
       <p className="eyebrow">How it works</p>
-      <h2 id="how-title">From a 403 to a scoped fix in three steps</h2>
+      <h2 id="how-title">From a log line to the exact rule in three steps</h2>
       <ol className="steps-grid">
         {steps.map((s, i) => (
           <li className="step-card" key={s.title}>
@@ -57,50 +62,57 @@ export function HowItWorks() {
 
 const GROUP_CARDS: { id: GroupId; icon: ComponentType<{ className?: string }>; title: string; what: string; often: string }[] = [
   {
-    id: 'bad_request',
-    icon: Route,
-    title: 'Request URI',
-    what: 'Paths and file names scanners try: secrets files, backups, shells, odd characters.',
-    often: 'Plugin routes that carry a URL, like Rank Math’s getHead.',
-  },
-  {
     id: 'bad_querystring',
     icon: ListFilter,
     title: 'Query string',
-    what: 'Injection patterns after the ?: SQL keywords, script tags, file paths.',
-    often: 'OAuth sign-ins that redirect to localhost.',
+    what: 'Injection after the ?: SQL keywords, script tags, file paths, encoded slashes. Read exactly as sent.',
+    often: 'Site searches with words like get or select, and OAuth sign-ins that send localhost.',
+  },
+  {
+    id: 'bad_request',
+    icon: Route,
+    title: 'Request path',
+    what: 'Paths scanners try: shells, backups, config files, odd characters. Read decoded, without the query string.',
+    often: 'A real page whose address looks like one, such as /backup/.',
   },
   {
     id: 'bad_bot',
     icon: Bot,
     title: 'User agent',
-    what: 'Crawler names and script signatures in the user agent.',
-    often: 'Link previews and SEO crawlers you actually want.',
+    what: 'Scanner and script names, fake browser names, and some crawlers.',
+    often: 'Crawlers you want, uptime monitors and curl, a payment provider’s security scanner.',
   },
   {
     id: 'bad_referer',
     icon: Link2,
     title: 'Referrer',
-    what: 'Known spam referrers and injection in the referring address.',
-    often: 'Rare. GridPane sites can also have this group off.',
+    what: 'Spam and injection in the referring address.',
+    often: 'Rare.',
+  },
+  {
+    id: 'bad_cookie',
+    icon: Cookie,
+    title: 'Cookie',
+    what: 'Injection hidden in a cookie.',
+    often: 'Rare. The log names the rule but never records the cookie itself.',
   },
   {
     id: 'not_allowed_method',
     icon: Waypoints,
     title: 'Method',
-    what: 'Request methods a WordPress site never needs, such as TRACE and CONNECT.',
-    often: 'Almost never: it answers 405, not 403.',
+    what: 'Methods a WordPress site never needs, such as TRACE and CONNECT.',
+    often: 'Almost never. It answers 405, and nginx refuses TRACE on its own first.',
   },
 ]
 
 export function RuleGroups() {
   return (
     <section className="section" id="rules" aria-labelledby="rules-title">
-      <p className="eyebrow">What 7G checks</p>
-      <h2 id="rules-title">Five rule groups, each reading one part of the request</h2>
+      <p className="eyebrow">What 8G checks</p>
+      <h2 id="rules-title">Six rule groups, each reading one part of the request</h2>
       <p className="section__lead">
-        A block is one pattern, in one group, matching one part of one request. The log names the group and the
-        number, so the fix can be that narrow too.
+        nginx reads each group as a list and stops at the first pattern that matches, so the log names one rule per
+        group. 8G Helper checks the whole list, so a second match can’t surprise you after the first is&nbsp;fixed.
       </p>
       <ul className="groups">
         {GROUP_CARDS.map((g) => {
@@ -110,7 +122,9 @@ export function RuleGroups() {
               <div className="group-card__head">
                 <g.icon className="group-card__icon" />
                 <h3>{g.title}</h3>
-                <span className="group-card__count mono">{group.rules.length} rules</span>
+                <span className="group-card__count mono">
+                  {group.rules.length} rule{group.rules.length === 1 ? '' : 's'}
+                </span>
               </div>
               <p className="group-card__vars mono">
                 <span>${group.input}</span>
@@ -132,44 +146,49 @@ export function RuleGroups() {
 const FAQ: { q: string; a: React.ReactNode }[] = [
   {
     q: 'Does the log line I paste leave my browser?',
-    a: 'No. Matching runs in your browser against a bundled copy of GridPane’s rules, and nothing you paste is sent or stored. Fathom counts visits without cookies and never sees your log lines.',
+    a: 'No. Matching runs in your browser against a bundled copy of 8G v1.5 from nG-SetEnvIf, and nothing you paste is sent or stored.',
   },
   {
-    q: 'Will a GridPane update remove the file?',
+    q: 'What is watch mode?',
     a: (
       <>
-        No. GridPane’s 7G config reads every <code>*-7g-context.conf</code> file in the site’s{' '}
-        <code>nginx</code> folder and in <code>/etc/nginx/extra.d</code>, and updates leave them alone. See{' '}
-        <ExternalLink href={LINKS.gridpaneDocs}>GridPane’s 7G guide</ExternalLink>.
+        A way to try 8G on a live site without risk: 8G checks every request and logs what it would block, while 7G keeps
+        blocking. It is two small files in the site’s own nginx folder. See <a href="#gridpane">7G to 8G</a>.
       </>
     ),
   },
   {
-    q: 'Why not turn the rule group off?',
-    a: 'Turning a group off drops every rule in it, for every request to the site. The exception drops one rule, for one address or one crawler, and only when that rule is what fired. Everything else 7G checks stays on.',
-  },
-  {
-    q: 'The rule number is not in GridPane’s list. What does that mean?',
+    q: 'Why is there no exception file, like 7G Helper’s?',
     a: (
       <>
-        It comes from a custom list on your server, which GridPane reads before its own rules. For a crawler, 7G Helper
-        shows how to take its name off that list, which fixes every site on the server. The exception file works too,
-        because it checks the number in your&nbsp;log.
+        On GridPane, 7G reads update-safe exception files and has a switch for each rule group. 8G has neither yet, and
+        its rules are one shared set per server. Until a scoped exception has been tested in enforce mode, 8G Helper
+        gives the documented fix: comment out the rule, or remove the one word that matched, in every copy on
+        the&nbsp;server.
       </>
     ),
   },
   {
-    q: 'A request got a 403, but there is no line in 7g.log.',
-    a: 'Then 7G did not block it. A 403 can also come from Cloudflare, ModSecurity, Fail2Ban or a security plugin, and an exception here will not change those.',
+    q: 'Will a GridPane update remove 8G?',
+    a: 'No. Everything lives in the site’s own nginx folder, which updates leave alone. Downloading a newer 8G replaces the rules, along with any line you commented out, so redo those edits after.',
   },
   {
-    q: 'Is this made by GridPane, or by the author of 7G?',
+    q: 'A request got a 403, but no 8G rule matches it.',
+    a: 'Then 8G did not block it. A 403 can also come from 7G, Cloudflare, Fail2Ban or a security plugin. In watch mode, 7G runs first, so anything it blocks never reaches the 8G log.',
+  },
+  {
+    q: 'Is this made by GridPane, or by the author of 8G?',
     a: (
       <>
-        No. 7G is Jeff Starr’s firewall, published at <ExternalLink href={LINKS.perishable}>Perishable Press</ExternalLink>. GridPane ships
-        its own modified version. 7G Helper is an independent tool, so review each file before you use it.
+        No. 8G is Jeff Starr’s firewall, published at <ExternalLink href={LINKS.eightG}>Perishable Press</ExternalLink>.
+        nG-SetEnvIf, the nginx version, is by Tonkünstler-on-the-Bund. 8G Helper is an independent tool, so check each
+        change before you make&nbsp;it.
       </>
     ),
+  },
+  {
+    q: 'What about Apache?',
+    a: 'Jeff’s official 8G is for Apache. An Apache version of this tool comes next, tested against real Apache before it ships.',
   },
 ]
 
@@ -177,7 +196,7 @@ export function Faq() {
   return (
     <section className="section" id="faq" aria-labelledby="faq-title">
       <p className="eyebrow">Questions</p>
-      <h2 id="faq-title">Before you save the file</h2>
+      <h2 id="faq-title">Before you change anything</h2>
       <div className="faq">
         {FAQ.map((f) => (
           <details className="faq__item" key={f.q}>

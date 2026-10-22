@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import './App.css'
 import { AppShell } from './app/AppShell'
 import { Analyzer } from './components/Analyzer'
+import { GridPaneGuide } from './components/GridPaneGuide'
 import { Faq, HowItWorks, RuleGroups } from './components/Sections'
 import { ThemeProvider } from './theme/ThemeProvider'
 
@@ -16,6 +17,7 @@ function App() {
       <AppShell>
         <Analyzer />
         <HowItWorks />
+        <GridPaneGuide />
         <RuleGroups />
         <Faq />
       </AppShell>

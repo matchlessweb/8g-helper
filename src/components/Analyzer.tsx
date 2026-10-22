@@ -1,13 +1,13 @@
 import { ArrowDown, Laptop, ScanSearch, Sparkles } from 'lucide-react'
 import { useId, useRef, useState, type FormEvent } from 'react'
-import { analyze, type LineResult } from '../lib/analyze'
-import { RULESET_SOURCE } from '../lib/rules'
-import { GROUPS } from '../lib/ruleset'
+import { analyze, type LineResult } from '../lib/ng/analyze'
+import { RULESET_SOURCE } from '../lib/ng/rules'
+import { GROUPS } from '../lib/ng/ruleset'
 import { HeroDemo } from './HeroDemo'
 import { ResultCard } from './ResultCard'
 
 export const EXAMPLE =
-  '[21/Oct/2026:06:25:38 +0000] [":bad_request_15:"] 203.0.113.20 example.com "GET /wp-json/rankmath/v1/getHead?url=https://example.com HTTP/2.0" 403 0.000 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36"'
+  '2026-10-21T15:40:02+00:00 200 "GET /?s=how+to+get+started" cookie=0 method=0 referer=0 bot=0 querystring=39 request=0 ip=203.0.113.24 ua="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" ref="https://example.com/"'
 
 export function Analyzer() {
   const [text, setText] = useState('')
@@ -44,28 +44,27 @@ export function Analyzer() {
         <div className="hero__inner">
           <div className="hero__copy">
             <p className="statusline mono">
-              <span className="statusline__seg statusline__seg--lead">GridPane 7G</span>
+              <span className="statusline__seg statusline__seg--lead">8G for nginx</span>
               <span className="statusline__seg">{`rules v${RULESET_SOURCE.version}`}</span>
               <span className="statusline__seg statusline__seg--extra">runs in your browser</span>
             </p>
             <h1>
-              <span className="hero__line">7G Firewall</span>{' '}
+              <span className="hero__line">8G Firewall</span>{' '}
               <span className="hero__line">
-                <span className="accent-underline">Exception</span> Generator
+                <span className="accent-underline">Rule</span> Finder
               </span>
             </h1>
             <p className="lead">
-              Paste a 7G log line to see the rule group and the exact pattern that fired. 7G Helper then writes an
-              exception for that one request shape, in the place GridPane keeps through its updates. The rest of the
-              firewall stays&nbsp;on.
+              Paste an 8G log line to see the rule that fired, its exact pattern, and the text it matched. On GridPane,
+              run 8G in watch mode beside 7G first, so you find the false positives before 8G blocks&nbsp;anything.
             </p>
             <div className="hero__actions">
               <a className="button button--primary button--lg" href="#tool">
                 Paste a log line
                 <ArrowDown aria-hidden="true" />
               </a>
-              <a className="button button--ghost button--lg" href="#how">
-                How it works
+              <a className="button button--ghost button--lg" href="#gridpane">
+                Move from 7G to 8G
               </a>
             </div>
           </div>
@@ -78,7 +77,7 @@ export function Analyzer() {
           <div className="window__bar">
             <span className="window__tab mono">
               <ScanSearch aria-hidden="true" />
-              7g.log
+              8g.log
             </span>
             <span className="window__meta mono" aria-live="polite">
               {lineCount === 0 ? 'empty' : `${lineCount} line${lineCount === 1 ? '' : 's'}`}
@@ -86,10 +85,10 @@ export function Analyzer() {
           </div>
           <div className="tool__body">
             <h2 id="tool-title" className="tool__title">
-              <label htmlFor={inputId}>Paste one or more lines from the 7G log</label>
+              <label htmlFor={inputId}>Paste one or more lines from the 8G log</label>
             </h2>
             <p className="muted small" id={`${inputId}-where`}>
-              The log is <code>/var/www/&lt;site&gt;/logs/7g.log</code> on the server.
+              On GridPane it is <code>/var/www/&lt;site&gt;/logs/8g.log</code>. A line from any access log works too.
             </p>
             <textarea
               id={inputId}
@@ -101,12 +100,12 @@ export function Analyzer() {
               spellCheck={false}
               autoCapitalize="off"
               autoCorrect="off"
-              placeholder='[21/Oct/2026:06:25:38 +0000] [":bad_request_15:"] 203.0.113.7 example.com "GET /…'
+              placeholder='2026-10-21T15:40:02+00:00 200 "GET /?s=…" cookie=0 method=0 referer=0 bot=0 querystring=39 …'
               aria-describedby={empty ? `${inputId}-where ${inputId}-empty` : `${inputId}-where`}
             />
             {empty && (
               <p id={`${inputId}-empty`} className="field-error" role="alert">
-                Paste at least one line from the 7G log first.
+                Paste at least one log line first.
               </p>
             )}
             <div className="tool__footer">

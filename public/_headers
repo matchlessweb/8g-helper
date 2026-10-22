@@ -1,9 +1,10 @@
-# Every pages.dev host of this project is noindex; the custom domain (7ghelper.com) gets no such rule, so it stays indexable.
-# The subdomain must be the one Cloudflare assigned (the "Project Domains" column of `wrangler pages project list`).
-https://7g-helper.pages.dev/*
+# Every pages.dev host of this project is noindex; the custom domain (8ghelper.com) gets no such rule, so it stays indexable.
+# No Pages project exists yet. When one does, replace 8g-helper below with the subdomain Cloudflare assigned (the
+# "Project Domains" column of `wrangler pages project list`) and check both hosts live before calling it done.
+https://8g-helper.pages.dev/*
   X-Robots-Tag: noindex
 
-https://:alias.7g-helper.pages.dev/*
+https://:alias.8g-helper.pages.dev/*
   X-Robots-Tag: noindex
 
 /*
