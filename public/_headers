@@ -1,0 +1,16 @@
+# Every pages.dev host of this project is noindex; the custom domain (7ghelper.com) gets no such rule, so it stays indexable.
+# The subdomain must be the one Cloudflare assigned (the "Project Domains" column of `wrangler pages project list`).
+https://7g-helper.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:alias.7g-helper.pages.dev/*
+  X-Robots-Tag: noindex
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

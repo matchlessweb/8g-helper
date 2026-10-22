@@ -1,0 +1,42 @@
+/* Design tokens: the light and dark themes. */
+
+:root {
+  --color-bg: #f3f6f8;
+  --color-surface: #ffffff;
+  --color-text: #14212b;
+  --color-muted: #4d5f6c;
+  --color-border: #cdd6dc;
+  --color-accent: #0b6e5f;
+  --color-on-accent: #ffffff;
+  --color-danger: #b3261e;
+  --color-success: #1e6b3a;
+
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-heading: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+  --shadow-sm: 0 1px 2px rgb(20 33 43 / 0.08);
+  --shadow-md: 0 4px 12px rgb(20 33 43 / 0.12);
+
+  --spacing-unit: 4px;
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #101a22;
+  --color-surface: #18252f;
+  --color-text: #e8eef2;
+  --color-muted: #9fb0bc;
+  --color-border: #2c3d4a;
+  --color-accent: #5fd0bc;
+  --color-on-accent: #06211c;
+  --color-danger: #ff8a80;
+  --color-success: #7fd49a;
+
+  color-scheme: dark;
+}

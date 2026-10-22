@@ -1,0 +1,471 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.skip {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: 100;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: 500;
+}
+
+.skip:focus {
+  top: 12px;
+}
+
+/* Masthead: sticky, frosted */
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid color-mix(in oklab, var(--color-border) 70%, transparent);
+  background: color-mix(in oklab, var(--color-bg) 78%, transparent);
+  backdrop-filter: saturate(1.4) blur(12px);
+}
+
+.masthead__inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  max-width: var(--page-wide);
+  margin: 0 auto;
+  padding: 10px var(--gutter);
+}
+
+.masthead__brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-text);
+  border-radius: var(--radius-sm);
+}
+
+.masthead__nav {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.masthead__nav a {
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  color: var(--color-muted);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    color 0.15s,
+    background-color 0.15s;
+}
+
+.masthead__nav a:hover {
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.iconbtn.menu-toggle {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .masthead__inner {
+    gap: 8px;
+  }
+
+  .masthead__nav {
+    display: none;
+  }
+
+  .theme-toggle {
+    margin-left: auto;
+  }
+
+  .iconbtn.menu-toggle {
+    display: inline-flex;
+  }
+}
+
+/* The morphing menu icon (after efferd's Menu Toggle Icon on 21st.dev): the long stroke folds into an X. */
+.iconbtn .menu-icon {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.45s ease-in-out;
+}
+
+.menu-icon__fold {
+  stroke-dasharray: 12 63;
+  transition:
+    stroke-dasharray 0.45s ease-in-out,
+    stroke-dashoffset 0.45s ease-in-out;
+}
+
+.menu-icon[data-open='true'] {
+  transform: rotate(-45deg);
+}
+
+.menu-icon[data-open='true'] .menu-icon__fold {
+  stroke-dasharray: 20 300;
+  stroke-dashoffset: -32.42px;
+}
+
+/* The phone menu hangs under the sticky masthead, which is its containing block. */
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding: 8px var(--gutter) 20px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+  box-shadow: var(--shadow-float);
+  animation: menu-in 0.22s ease-out both;
+}
+
+.mobile-menu ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mobile-menu li {
+  border-bottom: 1px solid var(--color-border);
+  animation: menu-in 0.3s ease-out both;
+}
+
+.mobile-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 56px;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mobile-menu__num {
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.mobile-menu__cta {
+  width: 100%;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* The house theme toggle (matchlessweb.com): a half-filled circle that turns 180 degrees in dark. */
+.iconbtn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-muted);
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.iconbtn:hover {
+  color: var(--color-text);
+  border-color: color-mix(in oklab, var(--color-accent) 50%, var(--color-border));
+}
+
+.iconbtn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.iconbtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.theme-toggle svg {
+  transition: transform 0.2s ease;
+}
+
+:root[data-theme='dark'] .theme-toggle svg {
+  transform: rotate(180deg);
+}
+
+/* Theme crossfade: the toggle adds this for 200ms; nothing else transitions color globally. */
+.theme-fade,
+.theme-fade *,
+.theme-fade *::before,
+.theme-fade *::after {
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    fill 0.15s ease,
+    stroke 0.15s ease !important;
+}
+
+.app-shell__main {
+  flex: 1;
+  width: 100%;
+}
+
+/* Links that leave the site: a new tab, and the arrow glued to the last word. */
+.extlink__tail {
+  white-space: nowrap;
+}
+
+.extlink__icon {
+  display: inline-block;
+  width: 0.875em;
+  height: 0.875em;
+  margin-left: 2px;
+  vertical-align: -0.05em;
+  opacity: 0.75;
+  transition: transform 0.15s ease;
+}
+
+.extlink:hover .extlink__icon {
+  transform: translate(1px, -1px);
+}
+
+/* Footer (after the Rounded Top Footer by mohammadshehadeh on 21st.dev): a raised panel with a tint at its top edge. */
+.site-footer {
+  margin-top: 96px;
+  padding: 0 8px;
+}
+
+.site-footer__panel {
+  position: relative;
+  overflow: hidden;
+  max-width: calc(var(--page-wide) + 160px);
+  margin: 0 auto;
+  border: 1px solid var(--color-border);
+  border-bottom: 0;
+  border-radius: 28px 28px 0 0;
+  background: var(--color-surface);
+}
+
+.site-footer__tint {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 180px;
+  background: radial-gradient(40% 160px at 50% 0%, color-mix(in oklab, var(--color-accent) 16%, transparent), transparent);
+  pointer-events: none;
+}
+
+.site-footer__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 40px 64px;
+  max-width: var(--page-wide);
+  margin: 0 auto;
+  padding: 56px var(--gutter) 40px;
+}
+
+.site-footer__brand {
+  color: var(--color-text);
+}
+
+.site-footer__brand p {
+  max-width: 42ch;
+  margin: 14px 0 0;
+  color: var(--color-muted);
+  font-size: 0.9375rem;
+}
+
+.site-footer__brand .site-footer__note {
+  margin-top: 18px;
+  padding-left: 12px;
+  border-left: 2px solid var(--color-border);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.site-footer__cols {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 32px 64px;
+}
+
+.site-footer h2 {
+  margin: 0 0 12px;
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.site-footer ul {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer__cols a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  color: var(--color-text);
+  font-size: 0.9375rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-footer__cols a:hover,
+.site-footer__bar a:hover {
+  color: var(--color-accent);
+}
+
+.site-footer__bar {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 24px;
+  max-width: var(--page-wide);
+  margin: 0 auto;
+  padding: 10px var(--gutter);
+  border-top: 1px dashed var(--color-border);
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.site-footer__bar p {
+  margin: 0;
+  padding: 10px 0;
+}
+
+.site-footer__credit a {
+  white-space: nowrap;
+  color: var(--color-text);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.site-footer__bar ul {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0 20px;
+}
+
+.site-footer__bar ul a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-muted);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* The outlined wordmark, cropped by the page's bottom edge, rising into place as it scrolls into view where supported. */
+.wordmark {
+  max-width: var(--page-wide);
+  margin: 8px auto 0;
+  padding: 0 var(--gutter);
+  aspect-ratio: 143 / 26;
+  overflow: hidden;
+  box-sizing: content-box;
+}
+
+.wordmark svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.wordmark__letters {
+  stroke: color-mix(in oklab, var(--color-text) 28%, transparent);
+  fill: color-mix(in oklab, var(--color-text) 3%, transparent);
+}
+
+.wordmark__brackets {
+  stroke: color-mix(in oklab, var(--color-accent) 70%, transparent);
+  fill: color-mix(in oklab, var(--color-accent) 8%, transparent);
+}
+
+@supports (animation-timeline: view()) {
+  .wordmark svg {
+    animation: wordmark-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 100%;
+  }
+}
+
+@keyframes wordmark-rise {
+  from {
+    opacity: 0;
+    transform: translateY(30%);
+  }
+}
+
+@media (max-width: 860px) {
+  .site-footer__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .site-footer__cols {
+    grid-template-columns: repeat(2, minmax(0, max-content));
+  }
+}
+
+@media (max-width: 640px) {
+  .site-footer {
+    padding: 0;
+  }
+
+  .site-footer__panel {
+    border-radius: 20px 20px 0 0;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .site-footer__inner {
+    padding-top: 40px;
+  }
+
+  .site-footer__bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .site-footer__bar p {
+    padding-bottom: 0;
+  }
+}
+
+/* The footer links stay on one line, so on a narrow phone the two columns stack. */
+@media (max-width: 480px) {
+  .site-footer__cols {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+}

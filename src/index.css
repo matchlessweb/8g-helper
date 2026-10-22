@@ -1,0 +1,125 @@
+@import '@fontsource/ibm-plex-sans/latin-400.css';
+@import '@fontsource/ibm-plex-sans/latin-500.css';
+@import '@fontsource/ibm-plex-sans/latin-600.css';
+@import '@fontsource/ibm-plex-sans/latin-700.css';
+@import '@fontsource/ibm-plex-mono/latin-400.css';
+@import '@fontsource/ibm-plex-mono/latin-500.css';
+@import './styles/tokens.css';
+
+/* Layout, depth and code colors, beyond the design.json tokens. Code colors hold 4.5:1 on --color-code-bg. */
+:root {
+  --page-wide: 1160px;
+  --page: 960px;
+  --gutter: 24px;
+  --color-code-bg: #f7f9fa;
+  --color-raised: #ffffff;
+  --shadow-card: 0 1px 2px rgb(20 33 43 / 0.06), 0 8px 24px -12px rgb(20 33 43 / 0.18);
+  --shadow-float: 0 1px 2px rgb(20 33 43 / 0.06), 0 24px 48px -24px rgb(20 33 43 / 0.32);
+  --tok-comment: #5b6b77;
+  --tok-keyword: #7a3e9d;
+  --tok-variable: #0b6e5f;
+  --tok-string: #8a4b00;
+  --tok-number: #a33a12;
+  --tok-flag: #7a3e9d;
+  --tok-command: #0b6e5f;
+}
+
+:root[data-theme='dark'] {
+  --color-code-bg: #0c151c;
+  --color-raised: #1c2a35;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+  --shadow-float: 0 1px 2px rgb(0 0 0 / 0.3), 0 24px 48px -24px rgb(0 0 0 / 0.8);
+  --tok-comment: #8b9ca8;
+  --tok-keyword: #d2a8ff;
+  --tok-variable: #5fd0bc;
+  --tok-string: #f2c27b;
+  --tok-number: #ffa98a;
+  --tok-flag: #d2a8ff;
+  --tok-command: #5fd0bc;
+}
+
+@media (max-width: 480px) {
+  :root {
+    --gutter: 16px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:root {
+  font: 16px/150% var(--font-body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-text);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: 2.25rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 1rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  margin: 0 0 0.5rem;
+}
+
+p {
+  margin: 0 0 1rem;
+  text-wrap: balance;
+}
+
+code,
+kbd,
+samp {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 0.15em 0.4em;
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-accent);
+}
