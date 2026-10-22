@@ -1,6 +1,6 @@
 # 8G Helper
 
-**[8ghelper.com](https://8ghelper.com/)** (not live yet): a free tool that reads an 8G firewall log line and names the
+**[8ghelper.com](https://8ghelper.com/)**: a free tool that reads an 8G firewall log line and names the
 rule that fired.
 
 Paste a line from a site's 8G log, or from any nginx or Apache access log. 8G Helper shows which 8G rule matched, its
@@ -8,11 +8,12 @@ exact pattern, the text in the request that set it off, and any other rule in th
 request you want, it gives nG's documented way to let it through for now, and what that costs. The page also explains
 how to run 8G beside 7G on GridPane in watch mode before switching over.
 
-Everything runs in the browser. There is no server, no account, and nothing you paste leaves the page.
+Everything runs in the browser. There is no server, no account, and nothing you paste leaves the page. Fathom counts
+page views on 8ghelper.com, without cookies.
 
 ## Status
 
-Not live yet; it goes up at 8ghelper.com on Cloudflare Pages. Started 2026-10-22 from
+Live at 8ghelper.com on Cloudflare Pages since 2026-10-22, built from
 [7G Helper](https://github.com/matchlessweb/7g-helper) v1. It covers 8G on nginx (nG-SetEnvIf). Apache 8G comes next,
 tested against real Apache before it ships. Scoped per-site exceptions wait until enforce mode has been tested on a
 staging site.
